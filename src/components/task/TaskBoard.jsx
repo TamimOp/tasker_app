@@ -30,10 +30,22 @@ function TaskBoard() {
     setTaskToUpdate(task);
     setShowAddModal(true);
   }
+  function handleClose() {
+    setShowAddModal(false);
+    setTaskToUpdate(null);
+  }
+  function handleDeleteTask(taskId) {
+    setTasks(tasks.filter((task) => task.id !== taskId));
+  }
+
   return (
     <section className="mb-20" id="tasks">
       {showAddModal && (
-        <AddTaskModal onSave={handleAddTask} taskToUpdate={taskToUpdate} />
+        <AddTaskModal
+          onSave={handleAddTask}
+          taskToUpdate={taskToUpdate}
+          onClose={handleClose}
+        />
       )}
       <div className="container">
         <div className="p-2 flex justify-end">
@@ -41,7 +53,11 @@ function TaskBoard() {
         </div>
         <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
           <TaskActions onAddClick={() => setShowAddModal(true)} />
-          <TaskLists tasks={tasks} onEdit={handleEditTask} />
+          <TaskLists
+            tasks={tasks}
+            onEdit={handleEditTask}
+            onDelete={handleDeleteTask}
+          />
         </div>
       </div>
     </section>
