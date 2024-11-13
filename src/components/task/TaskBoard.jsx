@@ -47,6 +47,14 @@ function TaskBoard() {
       )
     );
   }
+  function handleSearch(search) {
+    const filtered = tasks.filter(
+      (task) =>
+        task.title.toLowerCase().includes(search.toLowerCase()) ||
+        task.description.toLowerCase().includes(search.toLowerCase())
+    );
+    setTasks([...filtered]);
+  }
 
   return (
     <section className="mb-20" id="tasks">
@@ -59,19 +67,23 @@ function TaskBoard() {
       )}
       <div className="container">
         <div className="p-2 flex justify-end">
-          <SearchTask />
+          <SearchTask onSearch={handleSearch} />
         </div>
         <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
           <TaskActions
             onAddClick={() => setShowAddModal(true)}
             onDeleteAll={handleDeleteAll}
           />
-          <TaskLists
-            onFav={handleFavTask}
-            tasks={tasks}
-            onEdit={handleEditTask}
-            onDelete={handleDeleteTask}
-          />
+          {tasks.length > 0 ? (
+            <TaskLists
+              onFav={handleFavTask}
+              tasks={tasks}
+              onEdit={handleEditTask}
+              onDelete={handleDeleteTask}
+            />
+          ) : (
+            <p className="text-center">No Task Found</p>
+          )}
         </div>
       </div>
     </section>
