@@ -37,6 +37,16 @@ function TaskBoard() {
   function handleDeleteTask(taskId) {
     setTasks(tasks.filter((task) => task.id !== taskId));
   }
+  function handleDeleteAll() {
+    setTasks([]);
+  }
+  function handleFavTask(taskId) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId ? { ...task, isFavourite: !task.isFavourite } : task
+      )
+    );
+  }
 
   return (
     <section className="mb-20" id="tasks">
@@ -52,8 +62,12 @@ function TaskBoard() {
           <SearchTask />
         </div>
         <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
-          <TaskActions onAddClick={() => setShowAddModal(true)} />
+          <TaskActions
+            onAddClick={() => setShowAddModal(true)}
+            onDeleteAll={handleDeleteAll}
+          />
           <TaskLists
+            onFav={handleFavTask}
             tasks={tasks}
             onEdit={handleEditTask}
             onDelete={handleDeleteTask}
